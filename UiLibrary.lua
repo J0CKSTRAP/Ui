@@ -1469,7 +1469,7 @@ function Interface:BeginMenu(menu_options)
             if (tabButton:WaitForChild("TabButtonTitle")) and not tabClass.Showing and ContainerOpen then
                 local Text = tabButton:WaitForChild("TabButtonTitle")
                 TweenService:Create(Text, info, {
-                    TextColor3 = TextHoverColor
+                    TextColor3 = ElementProperties.TextHoverColor
                 }):Play()
             end
         end)
