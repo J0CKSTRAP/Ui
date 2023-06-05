@@ -19,7 +19,6 @@ local ElementProperties = {
         Disabled =  "rbxassetid://3926305904"
     },
     Accent = Color3.fromRGB(0, 110, 255) 
-    TextHoverColor = Color3.fromRGB(0, 79, 182)
 }
 
 local interface_name = crypt.base64.encode(tostring(Players.LocalPlayer.UserId))
@@ -63,7 +62,7 @@ function Interface:BeginMenu(menu_options)
 
     local Connections = {}
 
-   
+    local TextHoverColor = Color3.fromRGB(0, 79, 182)
 
     local ElementsEnabled = true
     local SearchShowing = false
@@ -87,7 +86,7 @@ function Interface:BeginMenu(menu_options)
     Window.Position = UDim2.new(0.35, 0, 0.15, 0)
 
     if (Navigation:WaitForChild("WindowTitle")) then
-        Navigation.WindowTitle.Text = menu_options.Text or "Rain V2"
+        Navigation.WindowTitle.Text = menu_options.Text or "RainHub V2"
     end
 
     if (Elements:WaitForChild("TabDisplay"):WaitForChild("GreyOut")) then
@@ -1469,7 +1468,7 @@ function Interface:BeginMenu(menu_options)
             if (tabButton:WaitForChild("TabButtonTitle")) and not tabClass.Showing and ContainerOpen then
                 local Text = tabButton:WaitForChild("TabButtonTitle")
                 TweenService:Create(Text, info, {
-                    TextColor3 = ElementProperties.TextHoverColor
+                    TextColor3 = TextHoverColor
                 }):Play()
             end
         end)
@@ -1618,68 +1617,6 @@ function Interface:BeginMenu(menu_options)
                             task.wait(.01)
                         end
                     end)
-                    Settings:CreateBoolean({
-                        Name = "Rainbow Text Hover",
-                        Default = false,
-                        OnChanged = function(value)
-                            RainbowAccent = value
-                            local hue = 0
-                            local saturation = 1
-                            local lightness = 0.5
-                            local step = 0.01
-            
-                            if value then
-                                rainbowThread = RunService.Heartbeat:Connect(function()
-                                    if value then
-                                        hue = hue + step
-                                        if hue > 1 then
-                                            hue = 0
-                                        end
-            
-                                        local function hueToRgb(p, q, t)
-                                            if t < 0 then
-                                                t = t + 1
-                                            end
-                                            if t > 1 then
-                                                t = t - 1
-                                            end
-                                            if t < 1 / 6 then
-                                                return p + (q - p) * 6 * t
-                                            end
-                                            if t < 1 / 2 then
-                                                return q
-                                            end
-                                            if t < 2 / 3 then
-                                                return p + (q - p) * (2 / 3 - t) * 6
-                                            end
-                                            return p
-                                        end
-            
-                                        local function hslToRgb(h, s, l)
-                                            local r, g, b
-            
-                                            if s == 0 then
-                                                r, g, b = l, l, l
-                                            else
-                                                local q = l < 0.5 and l * (1 + s) or l + s - l * s
-                                                local p = 2 * l - q
-                                                r = hueToRgb(p, q, h + 1 / 3)
-                                                g = hueToRgb(p, q, h)
-                                                b = hueToRgb(p, q, h - 1 / 3)
-                                            end
-            
-                                            return math.floor(r * 255), math.floor(g * 255), math.floor(b * 255)
-                                        end
-            
-                                        local rainbowColor = Color3.fromRGB(hslToRgb(hue, saturation, lightness))
-            
-                                        for _, k in ipairs(ElementClasses) do
-                                            k.Update("TextHoverColor", rainbowColor)
-                                        end
-            
-                                        task.wait(.01)
-                                    end
-                                end)
                 else
                     if rainbowThread then
                         rainbowThread:Disconnect()
