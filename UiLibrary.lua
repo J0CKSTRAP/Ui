@@ -1628,7 +1628,7 @@ function Interface:BeginMenu(menu_options)
             Name = "Rainbow Hover Text",
             Default = false,
             OnChanged = function(value)
-                RainbowAccent = value
+                RainbowTxtHover = value
                 local hue = 0
                 local saturation = 1
                 local lightness = 0.5
@@ -1705,7 +1705,7 @@ function Interface:BeginMenu(menu_options)
         end })
 
         Settings:CreateColorPicker({ Name = "Text Hover Color", Default = ElementProperties.Accent, OnChanged = function(color) 
-            if not (RainbowAccent) then
+            if not (RainbowAccent) or (RainbowTxtHover) then
                 TextHoverColor = color
             end
         end })
