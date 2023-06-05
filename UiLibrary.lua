@@ -19,6 +19,7 @@ local ElementProperties = {
         Disabled =  "rbxassetid://3926305904"
     },
     Accent = Color3.fromRGB(0, 110, 255) 
+    TextHoverColor = Color3.fromRGB(0, 79, 182)
 }
 
 local interface_name = crypt.base64.encode(tostring(Players.LocalPlayer.UserId))
@@ -62,7 +63,7 @@ function Interface:BeginMenu(menu_options)
 
     local Connections = {}
 
-    local TextHoverColor = Color3.fromRGB(0, 79, 182)
+   
 
     local ElementsEnabled = true
     local SearchShowing = false
@@ -1680,7 +1681,7 @@ function Interface:BeginMenu(menu_options)
                             local rainbowColor = Color3.fromRGB(hslToRgb(hue, saturation, lightness))
 
                             for _, k in ipairs(ElementClasses) do
-                                k.Update("Text Hover Color", rainbowColor)
+                                k.Update("TextHoverColor", rainbowColor)
                             end
 
                             task.wait(.01)
