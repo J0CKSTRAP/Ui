@@ -1680,7 +1680,7 @@ function Interface:BeginMenu(menu_options)
                             local rainbowColor = Color3.fromRGB(hslToRgb(hue, saturation, lightness))
 
                             for _, k in ipairs(ElementClasses) do
-                                k.Update("TextHoverColor", rainbowColor)
+                                k.Update("Text Hover Color", rainbowColor)
                             end
 
                             task.wait(.01)
