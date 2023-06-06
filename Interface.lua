@@ -86,7 +86,7 @@ function Interface:BeginMenu(menu_options)
     Window.Position = UDim2.new(0.35, 0, 0.15, 0)
 
     if (Navigation:WaitForChild("WindowTitle")) then
-        Navigation.WindowTitle.Text = menu_options.Text or "Rain V2"
+        Navigation.WindowTitle.Text = menu_options.Text or "RainHub V2"
     end
 
     if (Elements:WaitForChild("TabDisplay"):WaitForChild("GreyOut")) then
