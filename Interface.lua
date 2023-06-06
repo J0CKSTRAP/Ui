@@ -1550,7 +1550,7 @@ function Interface:BeginMenu(menu_options)
 
         local RainbowAccent = false
         local Settings = TabHandler:BeginTab("Settings")
-
+        local Legit = TabHandler:BeginTab("Legit")
         local rainbowThread = nil
 
         local rainbowThread = nil
