@@ -47,7 +47,7 @@ function Interface:BeginMenu(menu_options)
     end
 
     local menu_options = menu_options or {
-        Title = "Rainhub V2"
+        Title = menu_options.Title or "Rainhub V2"
     }
 
     if (gethui) then
@@ -1703,7 +1703,6 @@ function Interface:BeginMenu(menu_options)
             end
         })
 
-
         Settings:CreateColorPicker({ Name = "Accent Color", Default = ElementProperties.Accent, OnChanged = function(color) 
             if not (RainbowAccent) then
                 ElementProperties.Accent = color
@@ -1725,15 +1724,22 @@ function Interface:BeginMenu(menu_options)
         end  })
 
         Settings:CreateAction({
-            Name = "Uninject",
+            Name = "...",
             OnClick = function() 
                 print("Hello world!")
             end
         })
     end)
 
-
     return TabHandler
 end
 
-return Interface
+local a = Interface:BeginMenu({ Title = "Action" })
+local b = a:BeginTab("B")
+
+b:CreateAction({
+    Name = "Action Test",
+    OnClick = function() 
+        print("Hello world!")
+    end
+})
