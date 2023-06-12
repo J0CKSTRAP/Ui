@@ -1723,11 +1723,13 @@ function Interface:BeginMenu(menu_options)
         Settings:CreateTextField({ Name = "Load Configuration", Default = "", Ends="Clips", OnChanged = function(file_name) 
             Configurations:ParseConfiguration(file_name)
         end  })
+        
+        Settings:CreateAction({ Name = "Unattach", OnClick = function() 
+            print("Hello, world!")    
+       end
+       })
     end)
-    Settings:CreateAction({ Name = "Unattach", OnClick = function() 
-         print("Hello, world!")    
-    end
-    })
+
 
     return TabHandler
 end
