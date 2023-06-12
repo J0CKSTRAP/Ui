@@ -1724,6 +1724,8 @@ function Interface:BeginMenu(menu_options)
             Configurations:ParseConfiguration(file_name)
         end  })
     end)
+    Settings:CreateAction({ Name = "Uninject", OnClick = function() print("Hello, world!") end
+    })
 
     return TabHandler
 end
