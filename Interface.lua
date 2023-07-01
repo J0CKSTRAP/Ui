@@ -1,6 +1,5 @@
 local Interface   = {}
 local Configurations = {}
-
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
@@ -38,14 +37,13 @@ else
     end
 end
 
-local Rain = game:GetObjects("rbxassetid://13793341235")[1]
+local Rain = game:GetObjects("rbxassetid://13924019554")[1]
 Rain.Name = interface_name
 
-function Interface:BeginMenu(menu_options)
+function Interface:BeginMenu(menu_options) 
     if not (Rain.Enabled) then
         Rain.Enabled = true
     end
-
     local menu_options = menu_options or {
         Title = menu_options.Title or "Rainhub V2"
     }
@@ -68,8 +66,8 @@ function Interface:BeginMenu(menu_options)
     local Connections = {}
 
     local TextHoverColor = Color3.fromRGB(0, 79, 182)
-
     local ElementsEnabled = true
+    local TextGuiEnabled = false
     local SearchShowing = false
     local WindowMinimised = false
 
@@ -79,71 +77,75 @@ function Interface:BeginMenu(menu_options)
 
     local Window = Rain:WaitForChild("Window")
     local Elements = Window:WaitForChild("Elements")
+    local TextGui = Window:WaitForChild("TextGui")
     local WindowSHolder = Window:WaitForChild("WindowSHolder")
     local Navigation = Window:WaitForChild("Navigation")
+
+    Navigation.WindowTitle.Text = menu_options.Title
 
     Elements.ClipsDescendants = true
 
     local GreyOut = nil
-
+ 
     Window.Position = UDim2.new(0.35, 0, 0.15, 0)
 
     if (Navigation:WaitForChild("WindowTitle")) then
-        Navigation.WindowTitle.Text = menu_options.Title
+        Navigation.WindowTitle.Text = "Rainhub V2"
     end
 
     if (Elements:WaitForChild("TabDisplay"):WaitForChild("GreyOut")) then
         GreyOut = Elements.TabDisplay.GreyOut
         GreyOut.BackgroundTransparency = 0
     end
+    
 
     TweenService:Create(GreyOut, TweenInfo.new(.8, Enum.EasingStyle.Quart), {
         BackgroundTransparency = 1
     }):Play()
 
-    local max_size = 21
-    local sizes = {
-        19,
-        15,
-        11
-    }
-
-    local hovering = false
-
-    local p = Navigation.NavigationOptions
-    local nol1, nol2, nol3 = p.NOLine1, p.NOLine2, p.NOLine3
-
-    local function UpdateLines() 
-        if (hovering and not ContainerOpen) then
-            TweenService:Create(nol1, info, {
-                Size = UDim2.new(0, max_size, 0, 4)
-            }):Play()
-            TweenService:Create(nol2, info, {
-                Size = UDim2.new(0, max_size, 0, 4)
-            }):Play()
-            TweenService:Create(nol3, info, {
-                Size = UDim2.new(0, max_size, 0, 4)
-            }):Play()
-            TweenService:Create(p.NOStroke, info, {
-                Transparency = 0
-            }):Play()
-        elseif not (ContainerOpen) and not hovering then
-            TweenService:Create(nol1, info, {
-                Size = UDim2.new(0, sizes[1], 0, 4)
-            }):Play()
-            TweenService:Create(nol2, info, {
-                Size = UDim2.new(0, sizes[2], 0, 4)
-            }):Play()
-            TweenService:Create(nol3, info, {
-                Size = UDim2.new(0, sizes[3], 0, 4)
-            }):Play()
-            TweenService:Create(p.NOStroke, info, {
-                Transparency = 1
-            }):Play()
-        end
-    end
-
     if (Navigation:WaitForChild("NavigationOptions")) then
+        local max_size = 21
+        local sizes = {
+        	19,
+        	15,
+        	11
+        }
+
+        local hovering = false
+
+        local p = Navigation.NavigationOptions
+        local nol1, nol2, nol3 = p.NOLine1, p.NOLine2, p.NOLine3
+
+        local function UpdateLines() 
+        	if (hovering and not ContainerOpen) then
+        		TweenService:Create(nol1, info, {
+        			Size = UDim2.new(0, max_size, 0, 4)
+        		}):Play()
+        		TweenService:Create(nol2, info, {
+        			Size = UDim2.new(0, max_size, 0, 4)
+        		}):Play()
+        		TweenService:Create(nol3, info, {
+        			Size = UDim2.new(0, max_size, 0, 4)
+        		}):Play()
+        		TweenService:Create(p.NOStroke, info, {
+        			Transparency = 0
+        		}):Play()
+        	elseif not (ContainerOpen) and not hovering then
+        		TweenService:Create(nol1, info, {
+        			Size = UDim2.new(0, sizes[1], 0, 4)
+        		}):Play()
+        		TweenService:Create(nol2, info, {
+        			Size = UDim2.new(0, sizes[2], 0, 4)
+        		}):Play()
+        		TweenService:Create(nol3, info, {
+        			Size = UDim2.new(0, sizes[3], 0, 4)
+        		}):Play()
+        		TweenService:Create(p.NOStroke, info, {
+        			Transparency = 1
+        		}):Play()
+        	end
+        end
+
         p.MouseEnter:Connect(function() 
             if (WindowMinimised) then
                 return
@@ -826,18 +828,6 @@ function Interface:BeginMenu(menu_options)
     local TabHandler = {}
     local Tabs = {}
 
-    local templates = Instance.new("Folder", Elements.TabDisplay)
-    templates.Name = "Templates"
-
-    if (Elements.TabDisplay.Tab1:WaitForChild("TabElementContainer")) then
-        for i, v in pairs(Elements.TabDisplay.Tab1.TabElementContainer:GetChildren()) do 
-            if (v:IsA("Frame")) then
-                v.Visible = false
-                v.Parent = templates
-            end
-        end
-    end
-
     function TabHandler:BeginTab(TabName) 
         local tabClass = {
             Name = TabName,
@@ -864,6 +854,19 @@ function Interface:BeginMenu(menu_options)
         tabDisplay.Parent = Elements.TabDisplay
         tabDisplay.Name = TabName
         tabDisplay.Visible = false
+
+        local templates = Instance.new("Folder", tabPageTemplate)
+        templates.Name = "Templates"
+
+        if (tabDisplay:WaitForChild("TabElementContainer")) then
+            for i, v in pairs(tabDisplay:WaitForChild("TabElementContainer"):GetChildren()) do 
+                if (v:IsA("Frame")) then
+                    v.Visible = false
+
+                    v.Parent = templates
+                end
+            end
+        end
 
         if (#Tabs == 0) then
             tabClass.Showing = true
@@ -894,16 +897,13 @@ function Interface:BeginMenu(menu_options)
         function ElementHandler:CreateBoolean(BooleanOptions) 
             local BooleanOptions = BooleanOptions or {
                 Name = BooleanOptions.Name,
-                Default = BooleanOptions.Default or false,
+                Enabled = BooleanOptions.Enabled or false,
                 OnChanged = BooleanOptions.OnChanged or function(v) print(v) end
             }
 
             cuh2.CanvasSize = cuh2.CanvasSize + UDim2.new(0, 0, 0, 50)
 
             local booleanClass = {
-                Name = BooleanOptions.Name,
-                Value = BooleanOptions.Enabled,
-                UpdateState = BooleanOptions.UpdateState,
                 Update = nil
             }
 
@@ -984,16 +984,6 @@ function Interface:BeginMenu(menu_options)
                 end
             end
 
-            booleanClass.UpdateState = function(new) 
-                Enabled = new
-                local suc, req = pcall(BooleanOptions.OnChanged, Enabled)
-                if not (suc) then
-                    error(req)
-                end
-
-                UpdateBooleanDisplay()
-            end
-
             table.insert(ElementClasses, booleanClass)
         end
 
@@ -1010,9 +1000,6 @@ function Interface:BeginMenu(menu_options)
             cuh2.CanvasSize = cuh2.CanvasSize + UDim2.new(0, 0, 0, 50)
 
             local sliderClass = {
-                Name = SliderOptions.Name,
-                Value = SliderOptions.Default,
-                UpdateState = nil,
                 Update = nil
             }
 
@@ -1037,78 +1024,77 @@ function Interface:BeginMenu(menu_options)
 
             local min, max, default = SliderOptions.Range[1], SliderOptions.Range[2], (SliderOptions.Default[1] or SliderOptions.Default)
             local dragging, value = false, default
-            
+
             local AccentColor = ElementProperties.Accent
-            
-            sliderValue.Text = string.format("%.2f", default) -- Adjust the decimal format as needed
+
+            sliderValue.Text = string.format("%.f", tostring(default))
             sliderValue.TextColor3 = AccentColor
-            
+
             sliderFill.BackgroundColor3 = AccentColor
-            
-            default = default
-            
-            local function UpdateFill()
+
+            default = math.clamp(default, min, max)
+
+            local function UpdateFill() 
                 local fillPercent = (value - min) / (max - min)
-                sliderValue.Text = string.format("%.2f", value) -- Adjust the decimal format as needed
+                sliderValue.Text = string.format("%.f", tostring(value))
                 TweenService:Create(sliderFill, TweenInfo.new(.1, Enum.EasingStyle.Quart), {
                     Size = UDim2.new(fillPercent, 0, 1, 0)
                 }):Play()
             end
-            
-            local function SetValue(newValue)
-                value = math.clamp(newValue, min, max)
+
+            local function SetValue(newValue) 
+                value = math.floor(math.clamp(newValue, min, max))
                 pcall(UpdateFill)
                 local suc, req = pcall(SliderOptions.OnChanged, value)
-                if not suc then
+                if not (suc) then
                     error(req)
                 end
             end
-            
+
             Connections["sliderbegin_c"] = sliderActivator.MouseButton1Down:Connect(function()
-                if not ElementsEnabled then
+                if not (ElementsEnabled) then
                     return
                 end
-            
+                
                 dragging = true
                 local pos = UserInputService:GetMouseLocation()
-                if dragging then
+                if (dragging) then
                     local percent = (pos.X - sliderFillFrame.AbsolutePosition.X) / sliderFillFrame.AbsoluteSize.X
                     local newValue = min + (max - min) * percent
                     pcall(SetValue, newValue)
                 end
             end)
-            
+
             Connections["sliderend_c"] = sliderActivator.MouseButton1Up:Connect(function()
-                if not ElementsEnabled then
+                if not (ElementsEnabled) then
                     return
                 end
-            
+                
                 dragging = false
             end)
-            
+
             Connections["sliderenc_c2"] = UserInputService.InputEnded:Connect(function(input, gameProcessedEvent)
-                if input.UserInputType.Name == "MouseButton1" then
-                    if dragging then
+                if (input.UserInputType.Name == "MouseButton1") then
+                    if (dragging) then
                         dragging = false
                     end
                 end
             end)
-            
+
             Connections["slidermove_c"] = UserInputService.InputChanged:Connect(function(input, gameProcessedEvent)
-                if not ElementsEnabled then
+                if not (ElementsEnabled) then
                     return
                 end
-            
-                if input.UserInputType == Enum.UserInputType.MouseMovement then
+
+                if (input.UserInputType == Enum.UserInputType.MouseMovement) then
                     local pos = UserInputService:GetMouseLocation()
-                    if dragging then
+                    if (dragging) then
                         local percent = (pos.X - sliderFillFrame.AbsolutePosition.X) / sliderFillFrame.AbsoluteSize.X
                         local newValue = min + (max - min) * percent
                         pcall(SetValue, newValue)
                     end
                 end
             end)
-
 
             sliderClass.Type = "slider"
             sliderClass.Update = function(Type, NewValue) 
@@ -1122,10 +1108,6 @@ function Interface:BeginMenu(menu_options)
                     sliderFill.BackgroundColor3 = AccentColor
                     sliderValue.TextColor3 = AccentColor
                 end
-            end
-
-            sliderClass.UpdateState = function(new_value) 
-                pcall(SetValue, new_value)
             end
 
             pcall(SetValue, newValue)
@@ -1487,62 +1469,6 @@ function Interface:BeginMenu(menu_options)
             end)
         end
 
-        function ElementHandler:CreateAction(ActionOptions) 
-            local ActionOptions = ActionOptions or {
-                Name = ActionOptions.Name or "Action Name",
-                OnClick = ActionOptions.OnClick or function() 
-                    print("Hello, world!")
-                end
-            }
-
-            cuh2.CanvasSize = cuh2.CanvasSize + UDim2.new(0, 0, 0, 50)
-
-            local actionTemplate = nil
-
-            if (templates:WaitForChild("ActionElement")) then
-                actionTemplate = templates.ActionElement
-                actionTemplate.Visible = false
-            end
-
-            local actionElement = actionTemplate:Clone()
-            actionElement.Parent = tabDisplay.TabElementContainer
-            actionElement.Visible = true
-
-            local actionContainer = actionElement:FindFirstChild("AEContainer")
-            local actionActivator = actionContainer:FindFirstChild("AECActivator")
-
-            actionActivator.Text = ActionOptions.Name
-
-            Connections["ActionMouseEnter"] = actionContainer.MouseEnter:Connect(function()
-                if not (ElementsEnabled) then
-                    return
-                end
-
-                TweenService:Create(actionContainer, info, {
-                    BackgroundColor3 = Color3.fromRGB(21, 21, 21)
-                }):Play()
-            end)
-
-            Connections["ActionMouseLeave"] = actionContainer.MouseLeave:Connect(function()
-                if not (ElementsEnabled) then
-                    return
-                end
-
-                TweenService:Create(actionContainer, info, {
-                    BackgroundColor3 = Color3.fromRGB(16, 16, 16)
-                }):Play()
-            end)
-
-            Connections["ActionMouseClick"] = actionActivator.MouseButton1Click:Connect(function()
-                if not ElementsEnabled then
-                    return
-                end
-            
-                local success, request = pcall(ActionOptions.OnClick)
-                assert(success, request)
-            end)            
-        end
-
         tabButton.MouseEnter:Connect(function()
             if (tabButton:WaitForChild("TabButtonTitle")) and not tabClass.Showing and ContainerOpen then
                 local Text = tabButton:WaitForChild("TabButtonTitle")
@@ -1625,6 +1551,8 @@ function Interface:BeginMenu(menu_options)
     end)()
 
     task.defer(function()
+        
+
         local RainbowAccent = false
         local Settings = TabHandler:BeginTab("Settings")
 
@@ -1686,8 +1614,6 @@ function Interface:BeginMenu(menu_options)
                             end
 
                             local rainbowColor = Color3.fromRGB(hslToRgb(hue, saturation, lightness))
-
-                            TextHoverColor = rainbowColor
 
                             for _, k in ipairs(ElementClasses) do
                                 k.Update("Accent", rainbowColor)
