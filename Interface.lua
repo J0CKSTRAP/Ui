@@ -37,7 +37,7 @@ else
     end
 end
 
-local Rain = game:GetObjects("rbxassetid://13924019554")[1]
+local Rain = game:GetObjects("rbxassetid://13580655431")[1]
 Rain.Name = interface_name
 
 function Interface:BeginMenu(menu_options) 
@@ -1629,6 +1629,7 @@ function Interface:BeginMenu(menu_options)
                 end
             end
         })
+        
 
 
         Settings:CreateColorPicker({ Name = "Accent Color", Default = ElementProperties.Accent, OnChanged = function(color) 
